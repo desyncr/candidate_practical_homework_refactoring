@@ -5,7 +5,7 @@ namespace Language;
 /**
  * Business logic related to generating language files.
  */
-class LanguageBatchBo
+class LanguageBatchBo implements LanguageBatchBoInterface
 {
     /**
      * Contains the applications which ones require translations.
