@@ -19,7 +19,6 @@ class LanguageBatchBoTest extends TestCase
 
         $cache_path = Config::get('system.paths.root') . '/cache';
         foreach (Config::get('system.translated_applications') as $application => $langs) {
-
             $this->assertTrue(is_dir(sprintf("%s/%s", $cache_path, $application)));
 
             foreach ($langs as $lang) {
@@ -41,5 +40,4 @@ class LanguageBatchBoTest extends TestCase
             $this->assertTrue(file_exists($lang_file));
         }
     }
-
 }
