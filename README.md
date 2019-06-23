@@ -1,3 +1,13 @@
+# Solution
+
+## Running tests
+
+    $ cd path-to-project/
+    $ composer install
+    $ phpunit -c configuration.xml --testdox
+
+---
+
 # Task:
 Your task is to refactor the LanguageBatchBo!
 
@@ -16,3 +26,4 @@ The solution will be evaluated based on the following goals:
 * Use PHPUnit as testing framework.
 * Inline comments are not necessary.
 * You can clone this repository, but the homework should be sent to us via email (including the git files) and it should not be shared on github, or otherwise on the internet. 
+
