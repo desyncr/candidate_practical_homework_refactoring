@@ -4,6 +4,7 @@ namespace Docler\Language;
 
 use Docler\Config\Config;
 use Docler\Api\ApiCall;
+use Docler\Language\Exceptions\InvalidConfigurationException;
 
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
@@ -34,7 +35,7 @@ class LanguageBatchBo extends AbstractLanguageBatch
                 if ($this->getLanguageFile($application, $language)) {
                     $this->log(' OK');
                 } else {
-                    throw new \Exception('Unable to generate language file!');
+                    throw new \RunTimeException('Unable to generate language file!');
                 }
             }
         }
@@ -78,7 +79,12 @@ class LanguageBatchBo extends AbstractLanguageBatch
         }
 
         // If we got correct data we store it.
-        $destination = $this->getLanguageCachePath($application) . $language . '.php';
+        $destination = sprintf(
+            '%s%s.php',
+            $this->getLanguageCachePath($application),
+            $language,
+            '.php'
+        );
 
         return (bool)$this->backend->put($destination, $languageResponse['data']);
     }
@@ -87,6 +93,7 @@ class LanguageBatchBo extends AbstractLanguageBatch
      * Gets the language files for the applet and puts them into the cache.
      *
      * @throws Exception   If there was an error.
+     * @throws InvalidConfigurationException If there was an error.
      *
      * @return void
      */
@@ -101,9 +108,10 @@ class LanguageBatchBo extends AbstractLanguageBatch
 
         foreach ($applets as $appletDirectory => $appletLanguageId) {
             $this->log(sprintf('Getting > %s (%s) language xmls..', $appletLanguageId, $appletDirectory));
+
             $languages = $this->getAppletLanguages($appletLanguageId);
             if (empty($languages)) {
-                throw new \Exception(
+                throw new \InvalidConfigurationException(
                     sprintf(
                         'There is no available languages for the %s',
                         $appletLanguageId
@@ -117,6 +125,7 @@ class LanguageBatchBo extends AbstractLanguageBatch
             foreach ($languages as $language) {
                 $xmlContent = $this->getAppletLanguageFile($appletLanguageId, $language);
                 $xmlFile    = sprintf('%s/lang_%s.xml', $path, $language);
+
                 if (strlen($xmlContent) == $this->backend->put($xmlFile, $xmlContent)) {
                     $this->log(sprintf(" OK saving %s was successful.", $xmlFile));
                 } else {

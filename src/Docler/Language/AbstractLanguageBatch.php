@@ -6,6 +6,8 @@ use Docler\Config\Config;
 use Docler\Api\ApiCall;
 use Docler\Language\Backend\Filesystem;
 
+use Docler\Language\Exceptions\InvalidApiResponseException;
+
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -15,6 +17,8 @@ use Monolog\Handler\StreamHandler;
  */
 abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
 {
+    const API_RESPONSE_OK = 'OK';
+
     /**
      * Contains the applications which ones require translations.
      *
@@ -70,7 +74,12 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
      */
     protected function getLanguageCachePath($application)
     {
-        return $this->config::get('system.paths.root') . '/cache/' . $application. '/';
+        return sprintf(
+            '%s/%s/%s/',
+            $this->config::get('system.paths.root'),
+            'cache',
+            $application
+        );
     }
 
     /**
@@ -93,9 +102,16 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
         );
 
         try {
+
             $this->checkForApiErrorResult($result);
+
         } catch (\Exception $e) {
-            throw new \Exception('Getting languages for applet (' . $applet . ') was unsuccessful ' . $e->getMessage());
+            throw new \Exception(
+                sprintf(
+                    'Getting languages for applet (%s) was unsuccessful ', 
+                    $e->getMessage()
+                )
+            );
         }
 
         return $result['data'];
@@ -107,7 +123,7 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
      *
      * @param mixed  $result   The api call result to check.
      *
-     * @throws Exception   If the api call was not successful.
+     * @throws InvalidApiResponseException If the api call was not successful.
      *
      * @return void
      */
@@ -115,18 +131,25 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
     {
         // Error during the api call.
         if ($result === false || !isset($result['status'])) {
-            throw new \Exception('Error during the api call');
+            throw new InvalidApiResponseException('Error during the api call');
         }
+
         // Wrong response.
-        if ($result['status'] != 'OK') {
-            throw new \Exception('Wrong response: '
-                . (!empty($result['error_type']) ? 'Type(' . $result['error_type'] . ') ' : '')
-                . (!empty($result['error_code']) ? 'Code(' . $result['error_code'] . ') ' : '')
-                . ((string)$result['data']));
+        if ($result['status'] != self::API_RESPONSE_OK) {
+
+            throw new \InvalidApiResponseException(
+                sprintf(
+                    'Wrong response: Type(%s) Code(%s) %s',
+                    !empty($result['error_type']) ?? $result['error_type'],
+                    !empty($result['error_code']) ?? $result['error_code'],
+                    (string)$result['data']
+                )
+            );
+
         }
         // Wrong content.
         if ($result['data'] === false) {
-            throw new \Exception('Wrong content!');
+            throw new InvalidApiResponseException('Wrong content!');
         }
     }
 
