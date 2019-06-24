@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Docler.html">\Docler</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">53</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1212033164"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1212033164" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1482290787"></a>
+                                <a href="../namespaces/Docler.html" style="margin-left: 30px; padding-left: 0">Docler</a>
+            </div>
+            <div id="namespace-1482290787" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1311262271"></a>
+                                <a href="../namespaces/Docler.Api.html" style="margin-left: 30px; padding-left: 0">Api</a>
+            </div>
+            <div id="namespace-1311262271" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1566771759"></a>
+                                <a href="../namespaces/Docler.Api.Exceptions.html" style="margin-left: 30px; padding-left: 0">Exceptions</a>
+            </div>
+            <div id="namespace-1566771759" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Docler.Api.Exceptions.InvalidApiResponseException.html">InvalidApiResponseException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Docler.Api.ApiClientInterface.html">ApiClientInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Docler.Api.ApiInterface.html">ApiInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Docler.Api.ApiCall.html">ApiCall</a></li>
+                                                    <li class="class"><a href="../classes/Docler.Api.ApiClient.html">ApiClient</a></li>
+                                                    <li class="class"><a href="../classes/Docler.Api.ApiClientFactory.html">ApiClientFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1697528426"></a>
+                                <a href="../namespaces/Docler.Config.html" style="margin-left: 30px; padding-left: 0">Config</a>
+            </div>
+            <div id="namespace-1697528426" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Docler.Config.ConfigInterface.html">ConfigInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Docler.Config.Config.html">Config</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-738578753"></a>
+                                <a href="../namespaces/Docler.Language.html" style="margin-left: 30px; padding-left: 0">Language</a>
+            </div>
+            <div id="namespace-738578753" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-393483838"></a>
+                                <a href="../namespaces/Docler.Language.Exceptions.html" style="margin-left: 30px; padding-left: 0">Exceptions</a>
+            </div>
+            <div id="namespace-393483838" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Docler.Language.Exceptions.InvalidConfigurationException.html">InvalidConfigurationException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1965821327"></a>
+                                <a href="../namespaces/Docler.Language.Generators.html" style="margin-left: 30px; padding-left: 0">Generators</a>
+            </div>
+            <div id="namespace-1965821327" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Docler.Language.Generators.GeneratorInterface.html">GeneratorInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Docler.Language.Generators.AbstractGenerator.html">AbstractGenerator</a></li>
+                                                    <li class="class"><a href="../classes/Docler.Language.Generators.GeneratorFactory.html">GeneratorFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Docler.Language.LanguageBatchInterface.html">LanguageBatchInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Docler.Language.AbstractLanguageBatch.html">AbstractLanguageBatch</a></li>
+                                                    <li class="class"><a href="../classes/Docler.Language.LanguageBatchBoFactory.html">LanguageBatchBoFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Docler.Api.html">\Docler\Api</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Docler\Api</small>ApiCall</h1>
+                    <p><em></em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Docler.Api.ApiCall.html#method_call" class="">call()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Docler.Api.ApiCall.html#constant_GET_LANGUAGE_FILE_RESULT" class="">GET_LANGUAGE_FILE_RESULT</a><br />
+                                                                    <a href="../classes/Docler.Api.ApiCall.html#constant_GET_APPLET_LANGUAGE_FILE_RESULT" class="">GET_APPLET_LANGUAGE_FILE_RESULT</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Docler.Api.ApiCall.html#method_formatAsResult" class="">formatAsResult()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Api.ApiCall.html"><div class="path-wrapper">Api/ApiCall.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Docler\Api\ApiCall</div>
+                            </dd>
+
+                                                                            <dt>Implements</dt>
+                                                        <dd><a href="../classes/Docler.Api.ApiInterface.html"><div class="namespace-wrapper">\Docler\Api\ApiInterface</div></a></dd>
+                        
+                        
+                        
+                                                
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_GET_LANGUAGE_FILE_RESULT" name="constant_GET_LANGUAGE_FILE_RESULT" class="anchor"></a>
+            <article id="constant_GET_LANGUAGE_FILE_RESULT" class="constant">
+                <h3 class="">GET_LANGUAGE_FILE_RESULT</h3>
+                <pre class="signature">GET_LANGUAGE_FILE_RESULT = &quot;&lt;?php
+		return array (
+			&#039;our models&#039; =&gt; &#039;Unsere Darsteller&#039;,
+			&#039;favorites&#039; =&gt; &#039;Favoriten&#039;,
+			&#039;help&#039; =&gt; &#039;Hilfe&#039;,
+			&#039;account balance&#039; =&gt; &#039;Kontostand&#039;,
+			&#039;member login&#039; =&gt; &#039;Login&#039;,
+			&#039;login&#039; =&gt; &#039;Anmelden&#039;,
+			&#039;sign up&#039; =&gt; &#039;Registrieren&#039;,
+			&#039;get free credits&#039; =&gt; &#039;GRATIS Kredite&#039;,
+			&#039;boy&#039; =&gt; &#039;Jungs&#039;,
+			&#039;tranny&#039; =&gt; &#039;Tranny&#039;,
+			&#039;transvestite&#039; =&gt; &#039;Transvestit&#039;,
+			&#039;couple&#039; =&gt; &#039;Paare&#039;,
+			&#039;group&#039; =&gt; &#039;Gruppe&#039;,
+			&#039;girl&#039; =&gt; &#039;Mädchen&#039;,
+			&#039;hermaphrodite&#039; =&gt; &#039;Hermaphroditen&#039;,
+			&#039;shemale&#039; =&gt; &#039;Shemale&#039;,
+			&#039;all&#039; =&gt; &#039;Alles&#039;,
+			&#039;18-22&#039; =&gt; &#039;18-22&#039;,
+			&#039;asian&#039; =&gt; &#039;Asiaten&#039;,
+			&#039;big tits&#039; =&gt; &#039;Große Titten&#039;,
+			&#039;blonde&#039; =&gt; &#039;Blond&#039;,
+			&#039;ebony&#039; =&gt; &#039;Dunkelhäutig&#039;,
+			&#039;interracial&#039; =&gt; &#039;Interrassisch&#039;,
+			&#039;latin&#039; =&gt; &#039;Latin&#039;,
+			&#039;latex&#039; =&gt; &#039;Latex&#039;,
+			&#039;leather&#039; =&gt; &#039;Leder&#039;,
+			&#039;mommy&#039; =&gt; &#039;Mami&#039;,
+			&#039;muscular&#039; =&gt; &#039;Muskulös&#039;,
+			&#039;skinny&#039; =&gt; &#039;Zierlich&#039;,
+			&#039;small tits&#039; =&gt; &#039;Kleine Titten&#039;,
+			&#039;white&#039; =&gt; &#039;Weiß&#039;,
+			&#039;man&#039; =&gt; &#039;Mann&#039;,
+			&#039;anal&#039; =&gt; &#039;Anal&#039;,
+			&#039;woman&#039; =&gt; &#039;Frau&#039;
+		);&quot;</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_GET_APPLET_LANGUAGE_FILE_RESULT" name="constant_GET_APPLET_LANGUAGE_FILE_RESULT" class="anchor"></a>
+            <article id="constant_GET_APPLET_LANGUAGE_FILE_RESULT" class="constant">
+                <h3 class="">GET_APPLET_LANGUAGE_FILE_RESULT</h3>
+                <pre class="signature">GET_APPLET_LANGUAGE_FILE_RESULT = &#039;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+		&lt;data&gt;
+			&lt;button_go_private value=&quot;Privát Műsor indítása&quot;/&gt;
+			&lt;button_send value=&quot;Küldés&quot;/&gt;
+			&lt;button_confirm value=&quot;Rendben&quot;/&gt;
+			&lt;button_ok value=&quot;OK&quot;/&gt;
+			&lt;button_close value=&quot;Bezárás&quot;/&gt;
+			&lt;button_close_private value=&quot;Privát vége&quot;/&gt;
+			&lt;button_back_to_chat value=&quot;Vissza a chat-re&quot;/&gt;
+			&lt;button_back_to_cam value=&quot;Vissza a kamerához&quot;/&gt;
+			&lt;button_back value=&quot;Vissza&quot;/&gt;
+			&lt;cancel value=&quot;Törlés&quot;/&gt;
+			&lt;info_surprise value=&quot;Lepd meg a modellt&quot;/&gt;
+			&lt;info_gallery value=&quot;Galéria megtekintése&quot;/&gt;
+			&lt;info_gallery_no_image value=&quot;{@performerid} nem töltött még fel képeket&quot;/&gt;
+			&lt;info_snapshot value=&quot;Készíts egy pillanatképet&quot;/&gt;
+			&lt;info_add_fav value=&quot;Kedvencekhez adás&quot;/&gt;
+			&lt;info_rem_fav value=&quot;Kedvencekből törlés&quot;/&gt;
+			&lt;info_added_fav value=&quot;Hozzáadva a kedvencekhez&quot;/&gt;
+			&lt;info_removed_fav value=&quot;Kedvencekből eltávolítva&quot;/&gt;
+			&lt;info_buycredit value=&quot;Kreditvásárlás&quot;/&gt;
+			&lt;info_camera_on value=&quot;Kapcsold be a webkamerád&quot;/&gt;
+			&lt;info_camera_off value=&quot;Kapcsold ki a webkamerád&quot;/&gt;
+			&lt;info_size value=&quot;Nézetváltás&quot;/&gt;
+			&lt;info_personalinfo value=&quot;Modell adatlap&quot;/&gt;
+		&lt;/data&gt;&#039;</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                        
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_call" name="method_call" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">call()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">call(  <span class="argument">$target</span>,   <span class="argument">$mode</span>,   <span class="argument">$getParameters</span>,   <span class="argument">$postParameters</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$target </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$mode </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$getParameters </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$postParameters </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Docler.Api.ApiCall.html"><div class="path-wrapper">\Docler\Api\ApiCall</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_formatAsResult" name="method_formatAsResult" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">formatAsResult()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">formatAsResult(  <span class="argument">$data</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$data </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Docler.Api.ApiCall.html"><div class="path-wrapper">\Docler\Api\ApiCall</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">ApiCall.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Api/ApiCall.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Docler.html">\Docler</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on June 24th, 2019 at 07:02.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
