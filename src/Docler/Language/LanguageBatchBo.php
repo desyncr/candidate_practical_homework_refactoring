@@ -3,7 +3,6 @@
 namespace Docler\Language;
 
 use Docler\Config\Config;
-use Docler\Api\ApiCall;
 use Docler\Language\Exceptions\InvalidConfigurationException;
 use Docler\Language\Generators\GeneratorFactory;
 

@@ -4,12 +4,12 @@ namespace Docler\Language\Backend;
 
 class Filesystem extends AbstractBackend
 {
+    const DEFAULT_PERMS = 0755;
+
     public function put($key, $value) : int
     {
-        // If there is no folder yet, we'll create it.
-        var_dump($key);
         if (!is_dir(dirname($key))) {
-            mkdir(dirname($key), 0755, true);
+            mkdir(dirname($key), self::DEFAULT_PERMS, true);
         }
 
         return file_put_contents($key, $value);

@@ -3,10 +3,8 @@
 namespace Docler\Language;
 
 use Docler\Config\Config;
-use Docler\Api\ApiClientFactory;
 use Docler\Language\Backend\Filesystem;
 
-use Docler\Language\Exceptions\InvalidApiResponseException;
 
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
@@ -33,10 +31,6 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
      * @var BackendInterface
      */
     protected $backend;
-    /**
-     * @var ApiClientInterface
-     */
-    protected $api;
 
     /**
      * @var LoggerInterface
@@ -46,13 +40,11 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
     public function __construct(
         Backend             $backend = null,
         ConfigInterface     $config = null,
-        ApiClientInterface  $api    = null,
         LoggerInterface     $logger = null
     )
     {
         $this->config   = $config   ?? new Config;
         $this->backend  = $backend  ?? new Filesystem;
-        $this->api      = $api      ?? ApiClientFactory::create();
         $this->logger   = $logger;
 
         // This is done in order to provide a logger for any client

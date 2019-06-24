@@ -3,7 +3,6 @@
 namespace Docler\Language;
 
 use Docler\Config\Config;
-use Docler\Api\ApiCall;
 
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
@@ -18,7 +17,6 @@ class LanguageBatchBoFactory
 
         $service = new LanguageBatchBo(
             new Config,
-            new Api,
             $logger
         );
 
