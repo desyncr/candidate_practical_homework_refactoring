@@ -12,7 +12,7 @@ interface LanguageBatchBoInterface
      *
      * @return void
      */
-    public static function generateLanguageFiles();
+    public function generateLanguageFiles();
 
     /**
      * Gets the language files for the applet and puts them into the cache.
@@ -21,5 +21,5 @@ interface LanguageBatchBoInterface
      *
      * @return void
      */
-    public static function generateAppletLanguageXmlFiles();
+    public function generateAppletLanguageXmlFiles();
 }
