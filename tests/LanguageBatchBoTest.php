@@ -39,6 +39,10 @@ class LanguageBatchBoTest extends TestCase
         foreach (['en'] as $applet_lang) {
             $lang_file = sprintf('%s/lang_%s.xml', $flash_path, $applet_lang);
             $this->assertTrue(file_exists($lang_file));
+
+            $xml = simplexml_load_string(file_get_contents($lang_file), 'SimpleXMLElement', LIBXML_NOCDATA);
+            $this->assertNotNull($xml);
+            $this->assertNotNull($xml->button_go_private);
         }
     }
 }

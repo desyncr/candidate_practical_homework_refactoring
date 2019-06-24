@@ -5,6 +5,7 @@ namespace Docler\Language;
 use Docler\Config\Config;
 use Docler\Api\ApiCall;
 use Docler\Language\Exceptions\InvalidConfigurationException;
+use Docler\Language\Generators\GeneratorFactory;
 
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
@@ -22,6 +23,8 @@ class LanguageBatchBo extends AbstractLanguageBatch
      */
     public function generateLanguageFiles()
     {
+        $generator = GeneratorFactory::create('language');
+
         // The applications where we need to translate.
         $this->applications = $this->config::get('system.translated_applications');
 
@@ -31,62 +34,10 @@ class LanguageBatchBo extends AbstractLanguageBatch
 
             foreach ($languages as $language) {
                 $this->log(sprintf('[LANGUAGE: %s]', $language));
-
-                if ($this->getLanguageFile($application, $language)) {
-                    $this->log(' OK');
-                } else {
-                    throw new \RunTimeException('Unable to generate language file!');
-                }
+                $generator->generate($application, $language);
+                $this->log(sprintf('OK', $language));
             }
         }
-    }
-
-    /**
-     * Gets the language file for the given language and stores it.
-     *
-     * @param string $application   The name of the application.
-     * @param string $language      The identifier of the language.
-     *
-     * @throws CurlException   If there was an error during the download of the language file.
-     *
-     * @return bool   The success of the operation.
-     */
-    protected function getLanguageFile($application, $language)
-    {
-        $result = false;
-        $languageResponse = $this->api::call(
-            'system_api',
-            'language_api',
-            array(
-                'system' => 'LanguageFiles',
-                'action' => 'getLanguageFile'
-            ),
-            array('language' => $language)
-        );
-
-        try {
-
-            $this->checkForApiErrorResult($languageResponse);
-
-        } catch (\Exception $e) {
-            throw new \Exception(
-                sprintf(
-                    'Error during getting language file: (%s/%s)',
-                    $application,
-                    $language
-                )
-            );
-        }
-
-        // If we got correct data we store it.
-        $destination = sprintf(
-            '%s%s.php',
-            $this->getLanguageCachePath($application),
-            $language,
-            '.php'
-        );
-
-        return (bool)$this->backend->put($destination, $languageResponse['data']);
     }
 
     /**
@@ -99,46 +50,24 @@ class LanguageBatchBo extends AbstractLanguageBatch
      */
     public function generateAppletLanguageXmlFiles()
     {
+        $generator = GeneratorFactory::create('applet');
+
         // List of the applets [directory => applet_id].
         $applets = array(
             'memberapplet' => 'JSM2_MemberApplet',
         );
 
         $this->log('Getting applet language XMLs..');
-
         foreach ($applets as $appletDirectory => $appletLanguageId) {
             $this->log(sprintf('Getting > %s (%s) language xmls..', $appletLanguageId, $appletDirectory));
 
-            $languages = $this->getAppletLanguages($appletLanguageId);
-            if (empty($languages)) {
-                throw new \InvalidConfigurationException(
-                    sprintf(
-                        'There is no available languages for the %s',
-                        $appletLanguageId
-                    )
-                );
-            } else {
-                $this->log(sprintf(' - Available languages: %s', implode(', ', $languages)));
-            }
-
-            $path = Config::get('system.paths.root') . '/cache/flash';
+            $languages = $generator->getLanguages($appletLanguageId);
             foreach ($languages as $language) {
-                $xmlContent = $this->getAppletLanguageFile($appletLanguageId, $language);
-                $xmlFile    = sprintf('%s/lang_%s.xml', $path, $language);
-
-                if (strlen($xmlContent) == $this->backend->put($xmlFile, $xmlContent)) {
-                    $this->log(sprintf(" OK saving %s was successful.", $xmlFile));
-                } else {
-                    throw new \Exception(
-                        sprintf(
-                            'Unable to save applet: (%s) language: (%s) xml (%s)!',
-                            $appletLanguageId,
-                            $language,
-                            $xmlFile
-                        )
-                    );
-                }
+                $this->log(sprintf('[LANGUAGE: %s]', $language));
+                $generator->generate($appletLanguageId, $language);
+                $this->log(sprintf('OK'));
             }
+
             $this->log(sprintf(' < %s (%s) language xml cached.', $appletLanguageId, $appletDirectory));
         }
 

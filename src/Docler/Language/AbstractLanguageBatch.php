@@ -3,7 +3,7 @@
 namespace Docler\Language;
 
 use Docler\Config\Config;
-use Docler\Api\ApiCall;
+use Docler\Api\ApiClientFactory;
 use Docler\Language\Backend\Filesystem;
 
 use Docler\Language\Exceptions\InvalidApiResponseException;
@@ -17,8 +17,6 @@ use Monolog\Handler\StreamHandler;
  */
 abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
 {
-    const API_RESPONSE_OK = 'OK';
-
     /**
      * Contains the applications which ones require translations.
      *
@@ -36,7 +34,7 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
      */
     protected $backend;
     /**
-     * @var ApiInterface
+     * @var ApiClientInterface
      */
     protected $api;
 
@@ -48,13 +46,13 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
     public function __construct(
         Backend             $backend = null,
         ConfigInterface     $config = null,
-        ApiInterface        $api    = null,
+        ApiClientInterface  $api    = null,
         LoggerInterface     $logger = null
     )
     {
         $this->config   = $config   ?? new Config;
         $this->backend  = $backend  ?? new Filesystem;
-        $this->api      = $api      ?? new ApiCall;
+        $this->api      = $api      ?? ApiClientFactory::create();
         $this->logger   = $logger;
 
         // This is done in order to provide a logger for any client
@@ -63,135 +61,6 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
             $this->logger = new Logger(__CLASS__);
             $this->logger->pushHandler(new StreamHandler(STDOUT));
         }
-    }
-
-    /**
-     * Gets the directory of the cached language files.
-     *
-     * @param string $application   The application.
-     *
-     * @return string   The directory of the cached language files.
-     */
-    protected function getLanguageCachePath($application)
-    {
-        return sprintf(
-            '%s/%s/%s/',
-            $this->config::get('system.paths.root'),
-            'cache',
-            $application
-        );
-    }
-
-    /**
-     * Gets the available languages for the given applet.
-     *
-     * @param string $applet   The applet identifier.
-     *
-     * @return array   The list of the available applet languages.
-     */
-    protected function getAppletLanguages($applet)
-    {
-        $result = $this->api::call(
-            'system_api',
-            'language_api',
-            array(
-                'system' => 'LanguageFiles',
-                'action' => 'getAppletLanguages'
-            ),
-            array('applet' => $applet)
-        );
-
-        try {
-
-            $this->checkForApiErrorResult($result);
-
-        } catch (\Exception $e) {
-            throw new \Exception(
-                sprintf(
-                    'Getting languages for applet (%s) was unsuccessful ', 
-                    $e->getMessage()
-                )
-            );
-        }
-
-        return $result['data'];
-    }
-
-
-    /**
-     * Checks the api call result.
-     *
-     * @param mixed  $result   The api call result to check.
-     *
-     * @throws InvalidApiResponseException If the api call was not successful.
-     *
-     * @return void
-     */
-    protected function checkForApiErrorResult($result)
-    {
-        // Error during the api call.
-        if ($result === false || !isset($result['status'])) {
-            throw new InvalidApiResponseException('Error during the api call');
-        }
-
-        // Wrong response.
-        if ($result['status'] != self::API_RESPONSE_OK) {
-
-            throw new \InvalidApiResponseException(
-                sprintf(
-                    'Wrong response: Type(%s) Code(%s) %s',
-                    !empty($result['error_type']) ?? $result['error_type'],
-                    !empty($result['error_code']) ?? $result['error_code'],
-                    (string)$result['data']
-                )
-            );
-
-        }
-        // Wrong content.
-        if ($result['data'] === false) {
-            throw new InvalidApiResponseException('Wrong content!');
-        }
-    }
-
-    /**
-     * Gets a language xml for an applet.
-     *
-     * @param string $applet      The identifier of the applet.
-     * @param string $language    The language identifier.
-     *
-     * @return string|false   The content of the language file or false if weren't able to get it.
-     */
-    protected function getAppletLanguageFile($applet, $language)
-    {
-        $result = $this->api::call(
-            'system_api',
-            'language_api',
-            array(
-                'system' => 'LanguageFiles',
-                'action' => 'getAppletLanguageFile'
-            ),
-            array(
-                'applet' => $applet,
-                'language' => $language
-            )
-        );
-
-        try {
-
-            $this->checkForApiErrorResult($result);
-
-        } catch (\Exception $e) {
-            throw new \Exception(
-                sprintf(
-                    'Getting language xml for applet: (%s) on language: (%s) was unsuccessful: %s',
-                    $applet,
-                    $language,
-                    $e->getMessage()
-                )
-            );
-        }
-
-        return $result['data'];
     }
 
     protected function log($msg, $level = 'info')

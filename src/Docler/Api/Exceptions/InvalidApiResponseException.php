@@ -1,6 +1,6 @@
 <?php
 
-namespace Docler\Language\Exceptions;
+namespace Docler\Api\Exceptions;
 
 class InvalidApiResponseException extends \Exception
 {
