@@ -12,6 +12,8 @@ class LanguageBatchBoTest extends TestCase
     public function setUp() : void
     {
         $this->service = new LanguageBatchBo();
+        $cache_path = Config::get('system.paths.root') . '/cache';
+        @rmdir($cache_path);
     }
 
     public function testCanGetLanguageBatchBo()

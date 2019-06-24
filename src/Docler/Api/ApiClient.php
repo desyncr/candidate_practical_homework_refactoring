@@ -68,7 +68,7 @@ class ApiClient implements ApiClientInterface
             break;
         }
 
-        $response = $this->api::call(
+        $response = $this->api->call(
             'system_api',
             'language_api',
             $get_args,

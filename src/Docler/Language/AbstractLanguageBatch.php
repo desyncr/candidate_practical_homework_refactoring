@@ -2,6 +2,7 @@
 
 namespace Docler\Language;
 
+use Docler\Config\ConfigInterface;
 use Docler\Config\Config;
 
 use Psr\Log\LoggerInterface;
