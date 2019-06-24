@@ -16,7 +16,7 @@ final class ApiClientFactory
      *
      * @return ApiClientInterface
      */
-    static public function create(ApiInterface $api = null) : ApiClientInterface
+    public static function create(ApiInterface $api = null) : ApiClientInterface
     {
         // No futher configuration required
         return new ApiClient($api ?? new ApiCall);

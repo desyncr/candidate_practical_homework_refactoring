@@ -42,5 +42,4 @@ abstract class AbstractBackend implements BackendInterface
      * @return bool True no error ocurred.
      */
     abstract public function remove($key) : bool;
-
 }

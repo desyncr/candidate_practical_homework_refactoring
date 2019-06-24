@@ -39,8 +39,7 @@ abstract class AbstractLanguageBatch implements LanguageBatchInterface
     public function __construct(
         ConfigInterface     $config = null,
         LoggerInterface     $logger = null
-    )
-    {
+    ) {
         $this->config   = $config   ?? new Config;
         $this->logger   = $logger;
 

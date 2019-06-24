@@ -45,8 +45,7 @@ class ApiClient implements ApiClientInterface
             'language' => $lang
         ];
 
-        if ($type === self::GENERATOR_TYPE_APPLET)
-        {
+        if ($type === self::GENERATOR_TYPE_APPLET) {
             $post_args['applet'] = $target;
         }
 
@@ -54,8 +53,7 @@ class ApiClient implements ApiClientInterface
             'system' => 'LanguageFiles',
         ];
 
-        switch ($type)
-        {
+        switch ($type) {
         case self::GENERATOR_TYPE_APPLET:
             $get_args['action'] = 'getAppletLanguages';
             break;
@@ -78,9 +76,7 @@ class ApiClient implements ApiClientInterface
         );
 
         try {
-
             $this->checkForApiErrorResult($response);
-
         } catch (\Exception $e) {
             throw new \Exception(
                 sprintf(
@@ -114,7 +110,6 @@ class ApiClient implements ApiClientInterface
 
         // Wrong response.
         if ($result['status'] != self::API_RESPONSE_OK) {
-
             throw new \InvalidApiResponseException(
                 sprintf(
                     'Wrong response: Type(%s) Code(%s) %s',
@@ -123,7 +118,6 @@ class ApiClient implements ApiClientInterface
                     (string)$result['data']
                 )
             );
-
         }
         // Wrong content.
         if ($result['data'] === false) {

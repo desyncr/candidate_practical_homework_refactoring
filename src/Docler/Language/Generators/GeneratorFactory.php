@@ -21,15 +21,14 @@ final class GeneratorFactory
      *
      * @return GeneratorInteface
      */
-    static public function create($type) : GeneratorInterface
+    public static function create($type) : GeneratorInterface
     {
         $backend = new Filesystem;
         $api     = ApiClientFactory::create();
         $config  = new Config;
 
         $klass = null;
-        switch ($type)
-        {
+        switch ($type) {
         case self::GENERATOR_APPLET:
             $klass = ucfirst($type);
             break;

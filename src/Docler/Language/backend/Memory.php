@@ -35,8 +35,7 @@ class Memory extends AbstractBackend
      */
     public function get($key, $default = null) : ?string
     {
-        if ($this->exists($key))
-        {
+        if ($this->exists($key)) {
             return $this->data[$key];
         }
 
@@ -64,8 +63,7 @@ class Memory extends AbstractBackend
      */
     public function remove($key) : bool
     {
-        if ($this->exists($key))
-        {
+        if ($this->exists($key)) {
             unset($this->data[$key]);
         }
 

@@ -31,8 +31,7 @@ abstract class AbstractGenerator implements GeneratorInterface
         BackendInterface $backend,
         ApiClientInterface $api,
         ConfigInterface $config
-    )
-    {
+    ) {
         $this->backend = $backend;
         $this->api     = $api;
         $this->config = $config;
