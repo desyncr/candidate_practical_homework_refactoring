@@ -1,6 +1,6 @@
 <?php
 
-namespace Language;
+namespace Docler\Language;
 
 /**
  * Business logic related to generating language files.

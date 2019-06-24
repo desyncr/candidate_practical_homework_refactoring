@@ -1,8 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Language\LanguageBatchBo;
-use Language\Config;
+
+use Docler\Language\LanguageBatchBo;
+use Docler\Config\Config;
 
 class LanguageBatchBoTest extends TestCase
 {

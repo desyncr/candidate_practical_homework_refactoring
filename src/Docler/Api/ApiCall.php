@@ -1,8 +1,10 @@
 <?php
 
-namespace Language;
+namespace Docler\Api;
 
-class ApiCall
+use Docler\Api\ApiInterface;
+
+class ApiCall implements ApiInterface
 {
     const GET_LANGUAGE_FILE_RESULT = "<?php
 		return array (

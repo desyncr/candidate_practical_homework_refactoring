@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Language\ApiCall;
+use Docler\Api\ApiCall;
 
 class ApiCallTest extends TestCase
 {

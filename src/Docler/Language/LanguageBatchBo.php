@@ -1,6 +1,13 @@
 <?php
 
-namespace Language;
+namespace Docler\Language;
+
+use Docler\Config\Config;
+use Docler\Api\ApiCall;
+
+use Psr\Log\LoggerInterface;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 /**
  * Business logic related to generating language files.
@@ -15,6 +22,37 @@ class LanguageBatchBo implements LanguageBatchBoInterface
     protected static $applications = array();
 
     /**
+     * @var ConfigInterface
+     */
+    protected static $config;
+
+    /**
+     * @var ApiInterface
+     */
+    protected static $api;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected static $logger;
+
+    public function __construct(
+        ConfigInterface     $config = null,
+        ApiInterface        $api    = null,
+        LoggerInterface     $logger = null
+    )
+    {
+        self::$config   = $config   ?? new Config;
+        self::$api      = $api      ?? new ApiCall;
+        if ($logger) {
+            self::$logger = $logger;
+        } else {
+            self::$logger = new Logger(__CLASS__);
+            self::$logger->pushHandler(new StreamHandler(STDOUT));
+        }
+    }
+
+    /**
      * Starts the language file generation.
      *
      * @return void
@@ -22,15 +60,15 @@ class LanguageBatchBo implements LanguageBatchBoInterface
     public static function generateLanguageFiles()
     {
         // The applications where we need to translate.
-        self::$applications = Config::get('system.translated_applications');
+        self::$applications = self::$config::get('system.translated_applications');
 
-        echo "\nGenerating language files\n";
+        echo "Generating language files";
         foreach (self::$applications as $application => $languages) {
-            echo "[APPLICATION: " . $application . "]\n";
+            echo "[APPLICATION: " . $application . "]";
             foreach ($languages as $language) {
                 echo "\t[LANGUAGE: " . $language . "]";
                 if (self::getLanguageFile($application, $language)) {
-                    echo " OK\n";
+                    self::$logger->info(" OK");
                 } else {
                     throw new \Exception('Unable to generate language file!');
                 }
@@ -51,7 +89,7 @@ class LanguageBatchBo implements LanguageBatchBoInterface
     protected static function getLanguageFile($application, $language)
     {
         $result = false;
-        $languageResponse = ApiCall::call(
+        $languageResponse = self::$api::call(
             'system_api',
             'language_api',
             array(
@@ -89,7 +127,7 @@ class LanguageBatchBo implements LanguageBatchBoInterface
      */
     protected static function getLanguageCachePath($application)
     {
-        return Config::get('system.paths.root') . '/cache/' . $application. '/';
+        return self::$config::get('system.paths.root') . '/cache/' . $application. '/';
     }
 
     /**
@@ -106,7 +144,7 @@ class LanguageBatchBo implements LanguageBatchBoInterface
             'memberapplet' => 'JSM2_MemberApplet',
         );
 
-        echo "\nGetting applet language XMLs..\n";
+        self::$logger->info("\nGetting applet language XMLs..");
 
         foreach ($applets as $appletDirectory => $appletLanguageId) {
             echo " Getting > $appletLanguageId ($appletDirectory) language xmls..\n";
@@ -142,7 +180,7 @@ class LanguageBatchBo implements LanguageBatchBoInterface
      */
     protected static function getAppletLanguages($applet)
     {
-        $result = ApiCall::call(
+        $result = self::$api::call(
             'system_api',
             'language_api',
             array(
@@ -172,7 +210,7 @@ class LanguageBatchBo implements LanguageBatchBoInterface
      */
     protected static function getAppletLanguageFile($applet, $language)
     {
-        $result = ApiCall::call(
+        $result = self::$api::call(
             'system_api',
             'language_api',
             array(
