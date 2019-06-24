@@ -5,6 +5,10 @@ use Docler\Api\ApiInterface;
 use Docler\Api\ApiClientInterface;
 use Docler\Api\Exceptions\InvalidApiResponseException;
 
+/**
+ * Class is a wrapper over ApiCall class to provide functionallity
+ * to easily pass arguments to the API.
+ */
 class ApiClient implements ApiClientInterface
 {
     const API_RESPONSE_OK = 'OK';
@@ -17,13 +21,16 @@ class ApiClient implements ApiClientInterface
     /** @var ApiInterface */
     protected $api;
 
+    /**
+     * @param ApiInterface $api Api to wrap
+     */
     public function __construct(ApiInterface $api)
     {
         $this->api = $api;
     }
 
     /**
-     * Gets a language xml for an applet.
+     * Gets a language xml for an application or applet.
      *
      * @param string $target    The identifier of the applet.
      * @param string $lang      The language identifier.

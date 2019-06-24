@@ -8,9 +8,17 @@ use Psr\Log\LoggerInterface;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
+/**
+ * Factory to create language batch
+ */
 class LanguageBatchBoFactory
 {
-    public static function create()
+    /**
+     * Returns an instance of a language generator
+     *
+     * @return LanguageBatchInterface
+     */
+    public static function create() : LanguageBatchInterface
     {
         $logger = new Logger(__CLASS__);
         $logger->pushHandler(new StreamHandler(STDOUT));

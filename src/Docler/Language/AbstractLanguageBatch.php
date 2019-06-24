@@ -3,8 +3,6 @@
 namespace Docler\Language;
 
 use Docler\Config\Config;
-use Docler\Language\Backend\Filesystem;
-
 
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
@@ -13,7 +11,7 @@ use Monolog\Handler\StreamHandler;
 /**
  * Business logic related to generating language files.
  */
-abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
+abstract class AbstractLanguageBatch implements LanguageBatchInterface
 {
     /**
      * Contains the applications which ones require translations.
@@ -28,23 +26,22 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
     protected $config;
 
     /**
-     * @var BackendInterface
-     */
-    protected $backend;
-
-    /**
      * @var LoggerInterface
      */
     protected $logger;
 
+    /**
+     * Constructor
+     *
+     * @param ConfigInterface    $config  A config interface
+     * @param LoggerInterface    $logger  A logger inteface
+     */
     public function __construct(
-        Backend             $backend = null,
         ConfigInterface     $config = null,
         LoggerInterface     $logger = null
     )
     {
         $this->config   = $config   ?? new Config;
-        $this->backend  = $backend  ?? new Filesystem;
         $this->logger   = $logger;
 
         // This is done in order to provide a logger for any client
@@ -55,6 +52,12 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
         }
     }
 
+    /**
+     * Helper method to log if any logger is setup.
+     *
+     * @param string $msg   Message to log
+     * @param string $level Logging level (info, error, debug)
+     */
     protected function log($msg, $level = 'info')
     {
         if ($this->logger) {

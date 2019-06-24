@@ -8,11 +8,19 @@ use Docler\Language\Backend\Filesystem;
 use Docler\Language\Generators\Language;
 use Docler\Language\Generators\Applet;
 
+/**
+ * Factory to create language generators
+ */
 final class GeneratorFactory
 {
     const GENERATOR_APPLET = 'applet';
     const GENERATOR_LANG = 'language';
 
+    /**
+     * Returns an instance of a language generator
+     *
+     * @return GeneratorInteface
+     */
     static public function create($type) : GeneratorInterface
     {
         $backend = new Filesystem;

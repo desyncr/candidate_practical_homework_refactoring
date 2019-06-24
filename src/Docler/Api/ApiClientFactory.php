@@ -6,8 +6,16 @@ use Docler\Api\ApiClientInterface;
 use Docler\Api\ApiCall;
 use Docler\Api\Exceptions\InvalidApiResponseException;
 
+/**
+ * Factory to create ApiClient
+ */
 final class ApiClientFactory
 {
+    /**
+     * Returns an instance of an ApiClient
+     *
+     * @return ApiClientInterface
+     */
     static public function create(ApiInterface $api = null) : ApiClientInterface
     {
         // No futher configuration required

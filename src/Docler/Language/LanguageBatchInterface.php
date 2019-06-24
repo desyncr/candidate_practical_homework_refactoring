@@ -5,7 +5,7 @@ namespace Docler\Language;
 /**
  * Business logic related to generating language files.
  */
-interface LanguageBatchBoInterface
+interface LanguageBatchInterface
 {
     /**
      * Starts the language file generation.
