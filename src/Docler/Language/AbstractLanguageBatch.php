@@ -4,6 +4,7 @@ namespace Docler\Language;
 
 use Docler\Config\Config;
 use Docler\Api\ApiCall;
+use Docler\Language\Backend\Filesystem;
 
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
@@ -27,6 +28,10 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
     protected $config;
 
     /**
+     * @var BackendInterface
+     */
+    protected $backend;
+    /**
      * @var ApiInterface
      */
     protected $api;
@@ -37,12 +42,14 @@ abstract class AbstractLanguageBatch implements LanguageBatchBoInterface
     protected $logger;
 
     public function __construct(
+        Backend             $backend = null,
         ConfigInterface     $config = null,
         ApiInterface        $api    = null,
         LoggerInterface     $logger = null
     )
     {
         $this->config   = $config   ?? new Config;
+        $this->backend  = $backend  ?? new Filesystem;
         $this->api      = $api      ?? new ApiCall;
         $this->logger   = $logger;
 

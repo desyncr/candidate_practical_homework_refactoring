@@ -27,8 +27,10 @@ class LanguageBatchBo extends AbstractLanguageBatch
         $this->log('Generating language files');
         foreach ($this->applications as $application => $languages) {
             $this->log(sprintf('[APPLICATION: %s]', $application));
+
             foreach ($languages as $language) {
                 $this->log(sprintf('[LANGUAGE: %s]', $language));
+
                 if ($this->getLanguageFile($application, $language)) {
                     $this->log(' OK');
                 } else {
@@ -77,15 +79,8 @@ class LanguageBatchBo extends AbstractLanguageBatch
 
         // If we got correct data we store it.
         $destination = $this->getLanguageCachePath($application) . $language . '.php';
-        // If there is no folder yet, we'll create it.
-        var_dump($destination);
-        if (!is_dir(dirname($destination))) {
-            mkdir(dirname($destination), 0755, true);
-        }
 
-        $result = file_put_contents($destination, $languageResponse['data']);
-
-        return (bool)$result;
+        return (bool)$this->backend->put($destination, $languageResponse['data']);
     }
 
     /**
@@ -122,7 +117,7 @@ class LanguageBatchBo extends AbstractLanguageBatch
             foreach ($languages as $language) {
                 $xmlContent = $this->getAppletLanguageFile($appletLanguageId, $language);
                 $xmlFile    = sprintf('%s/lang_%s.xml', $path, $language);
-                if (strlen($xmlContent) == file_put_contents($xmlFile, $xmlContent)) {
+                if (strlen($xmlContent) == $this->backend->put($xmlFile, $xmlContent)) {
                     $this->log(sprintf(" OK saving %s was successful.", $xmlFile));
                 } else {
                     throw new \Exception(
